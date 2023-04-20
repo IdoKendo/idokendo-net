@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use yew::prelude::*;
 
 #[derive(Clone, PartialEq, Serialize, Deserialize)]
-pub struct Link {
+pub struct MyLink {
     pub id: usize,
     pub title: String,
     pub url: String,
@@ -10,7 +10,7 @@ pub struct Link {
 
 #[derive(Properties, PartialEq)]
 pub struct Props {
-    pub links: Vec<Link>,
+    pub links: Vec<MyLink>,
 }
 
 #[function_component(LinksList)]

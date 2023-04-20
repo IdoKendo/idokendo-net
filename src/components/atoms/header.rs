@@ -23,7 +23,6 @@ impl HeaderStyle {
 pub struct Props {
     pub title: Option<String>,
     pub header_style: HeaderStyle,
-    pub on_load: Callback<String>,
 }
 
 #[styled_component(Header)]
@@ -48,8 +47,6 @@ pub fn header(props: &Props) -> Html {
     "#
     )
     .expect("Failed to create stylesheet");
-
-    props.on_load.emit("Finished loading header".to_owned());
 
     html! {
         <div class={stylesheet}>
