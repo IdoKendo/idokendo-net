@@ -27,7 +27,6 @@ pub struct User {
 #[styled_component(App)]
 pub fn app() -> Html {
     let user_state = use_state(|| User::default());
-    let title: Option<&str> = Some("Home");
     let stylesheet = Style::new(CSS).expect("Failed to create stylesheet");
     let first_load = use_state(|| true);
 
@@ -61,7 +60,7 @@ pub fn app() -> Html {
     html! {
         <ContextProvider<User> context={user_state.deref().clone()}>
             <div class={stylesheet}>
-                <Header title={title} header_style={header_style} />
+                <Header header_style={header_style} />
                 <div class="content">
                     <BrowserRouter>
                         <InternalLinks />
