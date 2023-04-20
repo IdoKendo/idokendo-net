@@ -1,0 +1,54 @@
+header {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 3rem 0 0;
+}
+
+h1 {
+    font-size: large;
+}
+
+a {
+    color: #768390;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #4184E4;
+}
+
+.int-links {
+    border-bottom: 1px solid #a9a9a9;
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin: auto;
+    padding-bottom: .5rem;
+}
+
+ul {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+    justify-content: left;
+}
+
+li {
+    list-style: none;
+    padding-right: 2rem;
+}
+
+.content {
+    border: 1px solid;
+    margin: 1rem auto;
+    max-width: 750px;
+    min-height: 400px;
+    padding: 1.5rem;
+    background-color: #23272E;
+}
+
+* {
+    font-family: sans-serif;
+}
+
