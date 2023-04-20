@@ -1,6 +1,9 @@
+use std::fmt::{Display, Formatter, Result};
 use stylist::style;
 use stylist::yew::styled_component;
 use yew::prelude::*;
+
+use crate::HeaderText;
 
 #[derive(PartialEq)]
 pub enum HeaderStyle {
@@ -9,21 +12,22 @@ pub enum HeaderStyle {
     Error,
 }
 
-impl HeaderStyle {
-    pub fn to_string(&self) -> String {
-        match self {
+impl Display for HeaderStyle {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        let result = match self {
             HeaderStyle::Normal => "normal".to_owned(),
             HeaderStyle::Ok => "ok".to_owned(),
             HeaderStyle::Error => "error".to_owned(),
-        }
+        };
+
+        write!(f, "{}", result)
     }
 }
 
 #[derive(Properties, PartialEq)]
 pub struct Props {
-    pub title: Option<String>,
     pub header_style: HeaderStyle,
-    pub on_load: Callback<String>,
+    pub header_text: HeaderText,
 }
 
 #[styled_component(Header)]
@@ -48,17 +52,12 @@ pub fn header(props: &Props) -> Html {
     "#
     )
     .expect("Failed to create stylesheet");
-
-    props.on_load.emit("Finished loading header".to_owned());
+    let page_title = props.header_text.text.to_owned();
 
     html! {
         <div class={stylesheet}>
             <div class={props.header_style.to_string()}>
-                if let Some(page_title) = &props.title {
-                    <header>{ format!("IdoKendo / {page_title}") }</header>
-                } else {
-                    <header> { "IdoKendo / Where are we?" }</header>
-                }
+                <header>{ format!("IdoKendo / {page_title}") }</header>
             </div>
         </div>
     }

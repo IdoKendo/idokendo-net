@@ -12,9 +12,25 @@ a {
     color: #768390;
     font-weight: 700;
     text-decoration: none;
+    font-size: 1rem;
 }
 
 a:hover {
+    color: #4184E4;
+}
+
+button {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    color: #768390;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+button:hover {
     color: #4184E4;
 }
 
