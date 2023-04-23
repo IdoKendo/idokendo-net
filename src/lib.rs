@@ -1,5 +1,8 @@
+use gloo::console::log;
+use gloo::events::EventListener;
 use inflector::Inflector;
 use std::ops::Deref;
+use wasm_bindgen::{JsCast, UnwrapThrowExt};
 
 use stylist::yew::styled_component;
 use stylist::Style;
@@ -41,9 +44,9 @@ pub fn app() -> Html {
 
     let header_clone = header_state.clone();
     use_effect(move || {
+        let window = window().expect("Failed to get window");
         if *first_load {
-            let mut text = window()
-                .expect("Failed to get window")
+            let mut text = window
                 .location()
                 .pathname()
                 .expect("Failed to get path name")
@@ -55,7 +58,15 @@ pub fn app() -> Html {
             header_clone.set(HeaderText { text });
             first_load.set(false);
         }
-        || {}
+        let document = window.document().expect("Failed to get document");
+        let listener = EventListener::new(&document, "keydown", |event| {
+            let event = event.dyn_ref::<KeyboardEvent>().unwrap_throw();
+            match event.key().as_str() {
+                ":" => log!("menu"),
+                e => log!(e),
+            };
+        });
+        || drop(listener)
     });
 
     let custom_form_submit = {
@@ -86,7 +97,7 @@ pub fn app() -> Html {
 
     html! {
         <ContextProvider<User> context={user_state.deref().clone()}>
-            <div class={stylesheet}>
+            <div class={stylesheet} id="idokendo">
                 <Header header_style={header_style} header_text={header_state.deref().clone()} />
                 <div class="content">
                     <BrowserRouter>
