@@ -65,15 +65,33 @@ pub fn blog() -> Html {
         })
         .collect::<Html>();
 
+    let div = gloo_utils::document().create_element("div").unwrap();
+    let mut post: Option<Html> = None;
+
+    if display_state.id >= 0 {
+        let html = posts[display_state.id as usize].html.clone();
+        let html = html.split("</h2>").nth(1);
+        post = match html {
+            Some(article) => {
+                div.set_inner_html(article);
+                Some(Html::VRef(div.into()))
+            }
+            None => None,
+        };
+    }
+
     html! {
         <>
-            <h1>{ "Blog" }</h1>
             if display_state.id < 0 {
+                <h1>{ "Blog" }</h1>
                 {posts_list}
             } else {
-                <CustomButton label="Back" message="-1" onclick={post_select.clone()} />
-                <br />
-                {posts[display_state.id as usize].html.clone()}
+                <CustomButton label="Blog" message="-1" onclick={post_select.clone()} />
+                <h2>{posts[display_state.id as usize].title.clone()}</h2>
+                <h3>{posts[display_state.id as usize].date.clone()}</h3>
+                if let Some(post) = post {
+                    {post}
+                }
             }
         </>
     }

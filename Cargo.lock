@@ -317,6 +317,7 @@ version = "0.1.0"
 dependencies = [
  "Inflector",
  "gloo 0.8.0",
+ "gloo-utils",
  "include_dir",
  "markdown",
  "serde",
