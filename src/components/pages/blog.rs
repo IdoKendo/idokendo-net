@@ -14,7 +14,7 @@ struct PostTitle {
 
 fn get_field(field: &str, contents: &str) -> String {
     if let Some(title_line) = contents.lines().find(|line| line.starts_with(field)) {
-        if let Some(title) = title_line.split(":").nth(1) {
+        if let Some(title) = title_line.split(':').nth(1) {
             return title.trim().trim_matches('"').to_owned();
         } else {
             return "".to_owned();
@@ -87,7 +87,7 @@ pub fn blog() -> Html {
                 <h1>{ "Blog" }</h1>
                 {posts_list}
             } else {
-                <CustomButton label="Blog" message="-1" onclick={post_select.clone()} />
+                <CustomButton label="Blog" message="-1" onclick={post_select} />
                 <h2>{posts[display_state.id as usize].title.clone()}</h2>
                 <h3>{posts[display_state.id as usize].date.clone()}</h3>
                 if let Some(post) = post {

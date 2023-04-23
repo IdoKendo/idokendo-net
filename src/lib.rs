@@ -34,7 +34,7 @@ pub struct HeaderText {
 
 #[styled_component(App)]
 pub fn app() -> Html {
-    let user_state = use_state(|| User::default());
+    let user_state = use_state(User::default);
     let header_state = use_state(|| HeaderText {
         text: "Home".to_owned(),
     });
@@ -49,9 +49,9 @@ pub fn app() -> Html {
                 .location()
                 .pathname()
                 .expect("Failed to get path name")
-                .replace("/", "")
+                .replace('/', "")
                 .to_title_case();
-            if text == "" {
+            if text.is_empty() {
                 text = "Home".to_owned();
             }
             header_clone.set(HeaderText { text });
@@ -85,7 +85,7 @@ pub fn app() -> Html {
 
     html! {
         <ContextProvider<User> context={user_state.deref().clone()}>
-            <div class={stylesheet} id="idokendo">
+            <div class={stylesheet}>
                 <Header header_style={header_style} header_text={header_state.deref().clone()} />
                 <div class="content">
                     <BrowserRouter>

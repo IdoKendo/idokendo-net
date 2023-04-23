@@ -1,3 +1,4 @@
+use std::fmt::{Display, Formatter, Result};
 use stylist::style;
 use stylist::yew::styled_component;
 use yew::prelude::*;
@@ -11,13 +12,15 @@ pub enum HeaderStyle {
     Error,
 }
 
-impl HeaderStyle {
-    pub fn to_string(&self) -> String {
-        match self {
+impl Display for HeaderStyle {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        let result = match self {
             HeaderStyle::Normal => "normal".to_owned(),
             HeaderStyle::Ok => "ok".to_owned(),
             HeaderStyle::Error => "error".to_owned(),
-        }
+        };
+
+        write!(f, "{}", result)
     }
 }
 
