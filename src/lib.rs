@@ -1,8 +1,9 @@
+use inflector::Inflector;
 use std::ops::Deref;
 
-use gloo::console::log;
 use stylist::yew::styled_component;
 use stylist::Style;
+use web_sys::window;
 use yew::prelude::*;
 use yew::ContextProvider;
 use yew_router::prelude::*;
@@ -24,15 +25,34 @@ pub struct User {
     pub email: String,
 }
 
+#[derive(Clone, PartialEq, Default)]
+pub struct HeaderText {
+    pub text: String,
+}
+
 #[styled_component(App)]
 pub fn app() -> Html {
     let user_state = use_state(|| User::default());
+    let header_state = use_state(|| HeaderText {
+        text: "Home".to_owned(),
+    });
     let stylesheet = Style::new(CSS).expect("Failed to create stylesheet");
     let first_load = use_state(|| true);
 
+    let header_clone = header_state.clone();
     use_effect(move || {
         if *first_load {
-            log!("first load");
+            let mut text = window()
+                .expect("Failed to get window")
+                .location()
+                .pathname()
+                .expect("Failed to get path name")
+                .replace("/", "")
+                .to_title_case();
+            if text == "" {
+                text = "Home".to_owned();
+            }
+            header_clone.set(HeaderText { text });
             first_load.set(false);
         }
         || {}
@@ -49,6 +69,13 @@ pub fn app() -> Html {
         })
     };
 
+    let navigator_submit = {
+        let header_state = header_state.clone();
+        Callback::from(move |text| {
+            header_state.set(HeaderText { text });
+        })
+    };
+
     let header_style = if user_state.username.clone() == "" {
         HeaderStyle::Normal
     } else if user_state.username.clone() == "ido" {
@@ -60,10 +87,10 @@ pub fn app() -> Html {
     html! {
         <ContextProvider<User> context={user_state.deref().clone()}>
             <div class={stylesheet}>
-                <Header header_style={header_style} />
+                <Header header_style={header_style} header_text={header_state.deref().clone()} />
                 <div class="content">
                     <BrowserRouter>
-                        <InternalLinks />
+                        <InternalLinks onsubmit={navigator_submit} />
                         <ExternalLinks />
                         <CustomForm onsubmit={custom_form_submit} />
                         <Switch<Route> render={Switch::render(switch)} />

@@ -1,8 +1,8 @@
-use inflector::Inflector;
 use stylist::style;
 use stylist::yew::styled_component;
-use web_sys::window;
 use yew::prelude::*;
+
+use crate::HeaderText;
 
 #[derive(PartialEq)]
 pub enum HeaderStyle {
@@ -24,6 +24,7 @@ impl HeaderStyle {
 #[derive(Properties, PartialEq)]
 pub struct Props {
     pub header_style: HeaderStyle,
+    pub header_text: HeaderText,
 }
 
 #[styled_component(Header)]
@@ -48,26 +49,12 @@ pub fn header(props: &Props) -> Html {
     "#
     )
     .expect("Failed to create stylesheet");
-    let title = window()
-        .expect("Failed to get window")
-        .location()
-        .pathname()
-        .expect("Failed to get path name")
-        .replace("/", "")
-        .to_title_case();
-    let mut page_title = None;
-    if title != "" {
-        page_title = Some(title);
-    }
+    let page_title = props.header_text.text.to_owned();
 
     html! {
         <div class={stylesheet}>
             <div class={props.header_style.to_string()}>
-                if let Some(page_title) = page_title {
-                    <header>{ format!("IdoKendo / {page_title}") }</header>
-                } else {
-                    <header> { "IdoKendo / Home " }</header>
-                }
+                <header>{ format!("IdoKendo / {page_title}") }</header>
             </div>
         </div>
     }
