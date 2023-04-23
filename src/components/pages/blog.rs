@@ -56,6 +56,7 @@ pub fn blog() -> Html {
     }
     let posts_list = posts
         .iter()
+        .rev()
         .map(|post| {
             html! {
                 <li>
