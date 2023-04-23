@@ -15,7 +15,6 @@ mod components;
 mod router;
 
 use components::atoms::header::{Header, HeaderStyle};
-use components::molecules::custom_form::{CustomForm, Data};
 use components::molecules::external_links::ExternalLinks;
 use components::molecules::internal_links::InternalLinks;
 use router::{switch, Route};
@@ -69,17 +68,6 @@ pub fn app() -> Html {
         || drop(listener)
     });
 
-    let custom_form_submit = {
-        let user_state = user_state.clone();
-
-        Callback::from(move |data: Data| {
-            user_state.set(User {
-                username: data.username,
-                email: data.email,
-            });
-        })
-    };
-
     let navigator_submit = {
         let header_state = header_state.clone();
         Callback::from(move |text| {
@@ -103,7 +91,6 @@ pub fn app() -> Html {
                     <BrowserRouter>
                         <InternalLinks onsubmit={navigator_submit} />
                         <ExternalLinks />
-                        <CustomForm onsubmit={custom_form_submit} />
                         <Switch<Route> render={Switch::render(switch)} />
                     </BrowserRouter>
                 </div>
