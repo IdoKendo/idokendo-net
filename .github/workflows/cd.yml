@@ -1,7 +1,12 @@
-name: cd
+name: CD
 on:
-  release:
-    types: [created]
+  workflow_run:
+    branches: [main]
+    workflows: [ci]
+    types: [completed]
+
+permissions:
+  contents: write
 
 jobs:
   release:
