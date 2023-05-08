@@ -6,9 +6,9 @@ use crate::components::pages::home::Home;
 
 #[derive(Routable, PartialEq, Clone)]
 pub enum Route {
-    #[at("/")]
+    #[at("/idokendo-net")]
     Home,
-    #[at("/blog")]
+    #[at("idokendo-net/blog")]
     Blog,
 }
 

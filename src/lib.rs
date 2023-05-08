@@ -50,6 +50,8 @@ pub fn app() -> Html {
                 .pathname()
                 .expect("Failed to get path name")
                 .replace('/', "")
+                .to_title_case()
+                .replace("Idokendo Net", "")
                 .to_title_case();
             if text.is_empty() {
                 text = "Home".to_owned();
