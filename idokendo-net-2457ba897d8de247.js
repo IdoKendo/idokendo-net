@@ -674,11 +674,7 @@ function initSync(module) {
 
 async function init(input) {
     if (typeof input === 'undefined') {
-<<<<<<<< HEAD:idokendo-net-245fb83faff624e8.js
-        input = new URL('idokendo-net-245fb83faff624e8_bg.wasm', import.meta.url);
-========
         input = new URL('idokendo-net-2457ba897d8de247_bg.wasm', import.meta.url);
->>>>>>>> f8c8b9d (deploy: 27da566f9d88dc1698771fe822196474540521c0):idokendo-net-2457ba897d8de247.js
     }
     const imports = getImports();
 
