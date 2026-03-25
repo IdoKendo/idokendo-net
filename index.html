@@ -12,11 +12,18 @@
                 color: #768390;
             }
         </style>
-        <base href="/">
-        <link as="fetch" crossorigin href="/idokendo-net/idokendo-net-970e92d8fc073464_bg.wasm" integrity="sha384-jVOwMYmMHwuulCeqc-joA08McCQaDYTWJF7yaJ9Tl5iqOB86FPk4ZV073-aiKJLK" rel="preload" type="application/wasm">
-        <link crossorigin href="/idokendo-net/idokendo-net-970e92d8fc073464.js" integrity="sha384-r4tBazuui46m5X7dGugYtaVZvMz2T9eFe7puzDoFSAWuwkLLkEAj5T38sqNO8wE4" rel="modulepreload">
-    </head>
+        <base href="/" />
+    <link rel="modulepreload" href="/idokendo-net-2c0a953f73f12a0.js" crossorigin="anonymous" integrity="sha384-ZBNjsmzm8y/RWE2EK8eSsZpr1MlQ4G7FO+9sOmDvNNjxfCb6RL+UTqVoL4C32pa/"><link rel="preload" href="/idokendo-net-2c0a953f73f12a0_bg.wasm" crossorigin="anonymous" integrity="sha384-7WXfV4m1qGaYy6XSgDYd3HaWiBPKSvGhioW35wHUB2Sn8E5MLr0WDO7nkjuS3mSm" as="fetch" type="application/wasm"></head>
     <body>
-        <script type="module">import a,*as b from "/idokendo-net/idokendo-net-970e92d8fc073464.js";a(`/idokendo-net/idokendo-net-970e92d8fc073464_bg.wasm`);window.wasmBindings=b</script>
-    </body>
+<script type="module">
+import init, * as bindings from '/idokendo-net-2c0a953f73f12a0.js';
+const wasm = await init({ module_or_path: '/idokendo-net-2c0a953f73f12a0_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script></body>
 </html>
