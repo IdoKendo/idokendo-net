@@ -1,8 +1,5 @@
-use gloo::console::log;
-use gloo::events::EventListener;
 use inflector::Inflector;
 use std::ops::Deref;
-use wasm_bindgen::{JsCast, UnwrapThrowExt};
 
 use stylist::yew::styled_component;
 use stylist::Style;
@@ -59,15 +56,6 @@ pub fn app() -> Html {
             header_clone.set(HeaderText { text });
             first_load.set(false);
         }
-        let document = window.document().expect("Failed to get document");
-        let listener = EventListener::new(&document, "keydown", |event| {
-            let event = event.dyn_ref::<KeyboardEvent>().unwrap_throw();
-            match event.key().as_str() {
-                ":" => log!("menu"),
-                e => log!(e),
-            };
-        });
-        || drop(listener)
     });
 
     let navigator_submit = {
@@ -93,7 +81,7 @@ pub fn app() -> Html {
                     <BrowserRouter>
                         <InternalLinks onsubmit={navigator_submit} />
                         <ExternalLinks />
-                        <Switch<Route> render={Switch::render(switch)} />
+                        <Switch<Route> render={|routes: Route| switch(&routes)} />
                     </BrowserRouter>
                 </div>
             </div>

@@ -30,7 +30,20 @@ struct DisplayedPost {
 
 #[function_component(Blog)]
 pub fn blog() -> Html {
-    let mut posts: Vec<PostTitle> = Vec::new();
+    let posts = use_memo((), |_| {
+        let mut posts: Vec<PostTitle> = Vec::new();
+        for (idx, file) in POSTS_DIR.files().enumerate() {
+            let contents = file.contents_utf8().unwrap_or("");
+            posts.push(PostTitle {
+                id: idx as u32,
+                title: get_field("title", contents),
+                date: get_field("date", contents),
+                html: markdown::to_html(contents),
+            });
+        }
+        posts
+    });
+
     let display_state = use_state(|| DisplayedPost { id: -1 });
     let post_select = {
         let display_state = display_state.clone();
@@ -45,15 +58,6 @@ pub fn blog() -> Html {
         })
     };
 
-    for (idx, file) in POSTS_DIR.files().enumerate() {
-        let contents = file.contents_utf8().unwrap_or("");
-        posts.push(PostTitle {
-            id: idx as u32,
-            title: get_field("title", contents),
-            date: get_field("date", contents),
-            html: markdown::to_html(contents),
-        });
-    }
     let posts_list = posts
         .iter()
         .rev()
@@ -66,20 +70,16 @@ pub fn blog() -> Html {
         })
         .collect::<Html>();
 
-    let div = gloo_utils::document().create_element("div").unwrap();
-    let mut post: Option<Html> = None;
-
-    if display_state.id >= 0 {
+    let post: Option<Html> = if display_state.id >= 0 {
         let html = posts[display_state.id as usize].html.clone();
         let html = html.split("</h2>").nth(1);
-        post = match html {
-            Some(article) => {
-                div.set_inner_html(article);
-                Some(Html::VRef(div.into()))
-            }
+        match html {
+            Some(article) => Some(yew::Html::from_html_unchecked(article.into())),
             None => None,
-        };
-    }
+        }
+    } else {
+        None
+    };
 
     html! {
         <>

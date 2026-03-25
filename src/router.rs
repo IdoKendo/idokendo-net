@@ -8,7 +8,7 @@ use crate::components::pages::home::Home;
 pub enum Route {
     #[at("/idokendo-net")]
     Home,
-    #[at("idokendo-net/blog")]
+    #[at("/idokendo-net/blog")]
     Blog,
 }
 
